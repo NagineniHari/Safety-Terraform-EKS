@@ -42,12 +42,12 @@ module "eks" {
         amazonEBS = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
       }
 
+## Cluster auto scaling
       min_size     = 2
-      max_size     = 3
+      max_size     = 2
       desired_size = 2
     }
   }
-  
 
   tags = merge(
     local.common_tags,

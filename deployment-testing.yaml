@@ -1,0 +1,55 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: nginx
+# these are deployment labels
+  labels:
+    purpose: eks-upgrade    
+    project: safety
+spec:
+  replicas: 4
+  selector:
+    # these labels are used to select pods
+    matchLabels:
+      purpose: eks-upgrade      
+      project: safety
+    # pod definition
+  template: 
+    metadata:
+      labels:
+        purpose: eks-upgrade        
+        project: safety
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+---
+apiVersion: v1 
+kind: Service
+metadata: 
+  name: nginx
+spec:
+  type: LoadBalancer
+  selector:
+        purpose: eks-upgrade        
+        project: safety
+  ports:
+    - protocol: TCP
+      port: 80 ## services port
+      targetPort: 80 ## container port
+
+---
+apiVersion: v1 
+kind: Service
+metadata: 
+  name: nginx-upgrade
+spec:
+  ## If Service don't have clusterIP or if a service ClusterIP is none then it is called as headless service
+  clusterIP: None
+  selector:
+        purpose: eks-upgrade        
+        project: safety
+  ports:
+    - protocol: TCP
+      port: 80 ## services port
+      targetPort: 80 ## container port

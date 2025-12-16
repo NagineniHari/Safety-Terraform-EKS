@@ -61,8 +61,15 @@ module "eks" {
       min_size     = 2
       max_size     = 2
       desired_size = 2
-    }
 
+     taints = {
+       upgrade   ={
+        key = "upgrade"
+        value = "true"
+        effect = "NO_SCHEDULE"
+       }
+    }
+    }
   }
 
   tags = merge(

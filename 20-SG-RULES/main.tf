@@ -54,9 +54,9 @@ resource "aws_security_group_rule" "eks_node_bastion" {
   type                     = "ingress"
   security_group_id        = local.eks_node_sg_id
   source_security_group_id = local.bastion_sg_id
-  from_port                = 443
+  from_port                = 22
   protocol                 = "tcp"
-  to_port                  = 443
+  to_port                  = 22
 }
 # eks managed node accepting traffic from eks control plane from all port and all protocols
 resource "aws_security_group_rule" "eks_node_eks_control_plane" {
@@ -88,7 +88,7 @@ resource "aws_security_group_rule" "eks_node_vpc" {
   to_port                  = 0
 }
 
-# Frontend-alb accepting traffic from public on port number 443
+# Ingress alb accepting traffic from public on port number 443
 resource "aws_security_group_rule" "ingress_alb_public" {
   type              = "ingress"
   security_group_id = local.ingress_alb_sg_id

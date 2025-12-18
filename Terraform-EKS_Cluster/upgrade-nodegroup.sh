@@ -151,12 +151,19 @@ echo -e "${Y}Quick check for unhealthy pods...${N}" | tee -a "$LOG_FILE"
 kubectl get pods -A | egrep -i "Pending|CrashLoopBackOff|ImagePullBackOff" || true
 
 # ---- STEP2-B: Delete current nodegroup
-if [[ "$CURRENT_NG_VERSION" == "blue" ]]; then
-  ENABLE_BLUE=false
-  ENABLE_GREEN=true
+# if [[ "$CURRENT_NG_VERSION" == "blue" ]]; then
+#   ENABLE_BLUE=false
+#   ENABLE_GREEN=true
+# else
+#   ENABLE_GREEN=false
+#   ENABLE_BLUE=true
+# fi
+  if [[ "$CURRENT_NG_VERSION" == "blue" ]]; then
+  NG_BLUE_VERSION="$CURRENT_NG_K8S_VER"
+  NG_GREEN_VERSION="$CP_VERSION"
 else
-  ENABLE_GREEN=false
-  ENABLE_BLUE=true
+  NG_GREEN_VERSION="$CURRENT_NG_K8S_VER"
+  NG_BLUE_VERSION="$CP_VERSION"
 fi
 echo -e "${Y}Final vars: enable_blue=$ENABLE_BLUE enable_green=$ENABLE_GREEN${N}" | tee -a "$LOG_FILE"
 

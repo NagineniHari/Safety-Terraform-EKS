@@ -119,14 +119,14 @@ VALIDATE ${PIPESTATUS[0]} "Terraform apply (create target)"
 
 # --- Wait for target nodes Ready
 echo -e "${Y}Waiting for target nodes Ready: nodegroup=${TARGET_NG_VERSION}${N}" | tee -a "$LOG_FILE"
-kubectl get nodes -l "nodegroup=${TARGET_NG_VERSION}" -o wide | tee -a "$LOG_FILE"
+kubectl get nodes -L "nodegroup=${TARGET_NG_VERSION}" -o wide | tee -a "$LOG_FILE"
 
-kubectl wait --for=condition=Ready node -l "nodegroup=${TARGET_NG_VERSION}" --timeout=30m 2>&1 | tee -a "$LOG_FILE"
+kubectl wait --for=condition=Ready node -L "nodegroup=${TARGET_NG_VERSION}" --timeout=30m 2>&1 | tee -a "$LOG_FILE"
 VALIDATE ${PIPESTATUS[0]} "Wait for target nodes Ready"
 
 # --- Remove upgrade taint from target nodes (if exists)
 echo -e "${Y}Removing upgrade taint from target nodes (if exists): nodegroup=${TARGET_NG_VERSION}${N}" | tee -a "$LOG_FILE"
-TARGET_NODES=$(kubectl get nodes -l "nodegroup=${TARGET_NG_VERSION}" -o name)
+TARGET_NODES=$(kubectl get nodes -L "nodegroup=${TARGET_NG_VERSION}" -o name)
 for n in $TARGET_NODES; do
   kubectl taint "$n" upgrade=true:NoSchedule- >/dev/null 2>&1
 done

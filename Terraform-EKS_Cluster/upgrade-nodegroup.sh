@@ -160,7 +160,8 @@ else
 fi
 echo -e "${Y}Final vars: enable_blue=$ENABLE_BLUE enable_green=$ENABLE_GREEN${N}" | tee -a "$LOG_FILE"
 
-
+create_cloudwatch_log_group = false
+create_kms_key                = false
 
 terraform plan \
   -var="eks_version=$CP_VERSION" \

@@ -68,7 +68,7 @@ VALIDATE $? "Fetch current control plane version"
 echo -e "${Y}Control plane version: $CP_VERSION${N}" | tee -a "$LOG_FILE"
 
 # --- Detect current nodegroup kubelet minor version
-KUBELET_VER=$(kubectl get nodes -l "nodegroup=${CURRENT_NG_VERSION}" \
+KUBELET_VER=$(kubectl get nodes -L "nodegroup=${CURRENT_NG_VERSION}" \
   -o jsonpath='{.items[0].status.nodeInfo.kubeletVersion}' 2>/dev/null)
 
 if [[ -z "$KUBELET_VER" ]]; then

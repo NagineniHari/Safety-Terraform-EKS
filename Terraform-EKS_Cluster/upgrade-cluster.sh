@@ -11,7 +11,7 @@ N="\e[0m"
 #########
 # Cluster Region and Name
 #########
-CLUSTER_NAME="safety-dev"
+CLUSTER_NAME="safety-dev-1"
 AWS_REGION="us-east-1"
 
 EKS_TARGET_VERSION=$1

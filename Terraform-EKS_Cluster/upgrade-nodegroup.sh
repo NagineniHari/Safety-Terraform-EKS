@@ -6,7 +6,7 @@ G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 
-CLUSTER_NAME="safety-dev"
+CLUSTER_NAME="safety-dev-1"
 AWS_REGION="us-east-1"
 
 CURRENT_NG_VERSION="$1"  # blue|green
@@ -159,9 +159,6 @@ else
   ENABLE_BLUE=true
 fi
 echo -e "${Y}Final vars: enable_blue=$ENABLE_BLUE enable_green=$ENABLE_GREEN${N}" | tee -a "$LOG_FILE"
-
-create_cloudwatch_log_group = false
-create_kms_key                = false
 
 terraform plan \
   -var="eks_version=$CP_VERSION" \

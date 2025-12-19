@@ -7,8 +7,9 @@ sudo systemctl start docker
 sudo usermod -aG docker ec2-user
 sudo growpart /dev/xvda 4
 sudo lvextend -L +30G /dev/mapper/RootVG-varVol
-sudo lvextend -L +20G /dev/mapper/RootVG-homeVol
 sudo xfs_growfs /var
+sudo growpart /dev/xvda 4
+sudo lvextend -L +20G /dev/mapper/RootVG-homeVol
 sudo xfs_growfs /home
 ## Installing Terraform
 sudo yum install -y yum-utils

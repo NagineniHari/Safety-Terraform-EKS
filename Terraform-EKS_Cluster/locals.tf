@@ -1,5 +1,5 @@
 locals {
-  common_name_suffix           = "${var.project_name}-${var.environment}"
+  common_name_suffix           = "${var.project_name}-${var.environment}"  # safety-dev
   vpc_id                       = data.aws_ssm_parameter.vpc_id.value
   private_subnet_ids            = split(",", data.aws_ssm_parameter.private_subnet_ids.value)
   eks_control_plane_sg_id = data.aws_ssm_parameter.eks_control_plane_sg_id.value 
@@ -10,4 +10,3 @@ locals {
     Terraform   = "true"
   }
 }
-

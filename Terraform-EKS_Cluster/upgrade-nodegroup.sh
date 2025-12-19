@@ -68,7 +68,7 @@ VALIDATE $? "Fetch current control plane version"
 echo -e "${Y}Control plane version: $CP_VERSION${N}" | tee -a "$LOG_FILE"
 
 # --- Detect current nodegroup kubelet minor version
-KUBELET_VER=$(kubectl get nodes -L "nodegroup=${CURRENT_NG_VERSION}" \
+KUBELET_VER=$(kubectl get nodes -l "nodegroup=${CURRENT_NG_VERSION}" \
   -o jsonpath='{.items[0].status.nodeInfo.kubeletVersion}' 2>/dev/null)
 
 if [[ -z "$KUBELET_VER" ]]; then
@@ -119,14 +119,14 @@ VALIDATE ${PIPESTATUS[0]} "Terraform apply (create target)"
 
 # --- Wait for target nodes Ready
 echo -e "${Y}Waiting for target nodes Ready: nodegroup=${TARGET_NG_VERSION}${N}" | tee -a "$LOG_FILE"
-kubectl get nodes -L "nodegroup=${TARGET_NG_VERSION}" -o wide | tee -a "$LOG_FILE"
+kubectl get nodes -l "nodegroup=${TARGET_NG_VERSION}" -o wide | tee -a "$LOG_FILE"
 
 kubectl wait --for=condition=Ready node -l "nodegroup=${TARGET_NG_VERSION}" --timeout=30m 2>&1 | tee -a "$LOG_FILE"
 VALIDATE ${PIPESTATUS[0]} "Wait for target nodes Ready"
 
 # --- Remove upgrade taint from target nodes (if exists)
 echo -e "${Y}Removing upgrade taint from target nodes (if exists): nodegroup=${TARGET_NG_VERSION}${N}" | tee -a "$LOG_FILE"
-TARGET_NODES=$(kubectl get nodes -L "nodegroup=${TARGET_NG_VERSION}" -o name)
+TARGET_NODES=$(kubectl get nodes -l "nodegroup=${TARGET_NG_VERSION}" -o name)
 for n in $TARGET_NODES; do
   kubectl taint "$n" upgrade=true:NoSchedule- >/dev/null 2>&1
 done
@@ -159,6 +159,8 @@ else
   ENABLE_BLUE=true
 fi
 echo -e "${Y}Final vars: enable_blue=$ENABLE_BLUE enable_green=$ENABLE_GREEN${N}" | tee -a "$LOG_FILE"
+
+
 
 terraform plan \
   -var="eks_version=$CP_VERSION" \

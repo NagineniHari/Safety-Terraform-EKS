@@ -3,7 +3,7 @@ module "eks" {
   version = "~> 21.0" # This is Module version
 
   name               = local.common_name_suffix
-  ## kubernetes_version = "1.32"
+  ## kubernetes_version = "1.33"
   kubernetes_version = var.eks_version
 
   addons = {
@@ -71,7 +71,7 @@ module "eks" {
       
       # cluster nodes autoscaling
       min_size     = 2
-      max_size     = 10
+      max_size     = 2
       desired_size = 2
 
       # taints = {

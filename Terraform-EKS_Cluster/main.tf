@@ -1,9 +1,9 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 21.0" # this is module version
+  version = "~> 21.0" # This is Module version
 
   name               = local.common_name_suffix
-  # kubernetes_version = "1.32"
+  ## kubernetes_version = "1.32"
   kubernetes_version = var.eks_version
 
   addons = {
@@ -17,8 +17,9 @@ module "eks" {
     }
     metrics-server = {}
   }
-
+# Optional public access disabled
   endpoint_public_access = false
+# Optional: Adds the current caller identity as an administrator via cluster access entry
   enable_cluster_creator_admin_permissions = true
 
   vpc_id                   = local.vpc_id
@@ -28,7 +29,6 @@ module "eks" {
   create_security_group      = false
   node_security_group_id = local.eks_node_sg_id
   security_group_id = local.eks_control_plane_sg_id
-
   # EKS Managed Node Group(s)
   eks_managed_node_groups = {
     blue = {
@@ -43,7 +43,7 @@ module "eks" {
       
       # cluster nodes autoscaling
       min_size     = 2
-      max_size     = 10
+      max_size     = 2
       desired_size = 2
 
       # taints = {
